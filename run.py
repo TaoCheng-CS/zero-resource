@@ -32,7 +32,6 @@ import bilstm_crf
 import utils
 import random
 
-import codecs
 from collections import Counter
 import json
 import fasttext
@@ -126,7 +125,7 @@ def train(args, weights_matrix):
                     new_weights_matrix = params['state_dict']['embedding.weight']
                     b = new_weights_matrix.tolist()
                     file_path = "./data/weights_matrix.json"
-                    json.dump(b, codecs.open(file_path, 'w', encoding='utf-8'), separators=(',', ':'), sort_keys=True, indent=4)
+                    json.dump(b, open(file_path, 'w', encoding='utf-8'), separators=(',', ':'), sort_keys=True, indent=4)
                 else:
                     patience += 1
                     if patience == int(args['--max-patience']):
@@ -276,7 +275,7 @@ def preprocess_data(args, parameter='TRAIN'):
     """
     sentences = []
     sentence = []
-    for line in codecs.open(args[parameter], 'r', 'utf8'):
+    for line in open(args[parameter], 'r', 'utf8'):
         line = line.rstrip()
         if not line:
             if len(sentence) > 0:
@@ -361,7 +360,7 @@ def pretrained(target_vocab, emb_dim=300):
 
     b = weights_matrix.tolist()
     file_path = "./data/weights_matrix.json"
-    json.dump(b, codecs.open(file_path, 'w', encoding='utf-8'), separators=(',', ':'), sort_keys=True, indent=4)
+    json.dump(b, open(file_path, 'w', encoding='utf-8'), separators=(',', ':'), sort_keys=True, indent=4)
 
     return weights_matrix
 
@@ -390,11 +389,17 @@ def iobes_iob(tags):
     return new_tags
 
 def main():
+
+    # __doc__ is the documentation of the python object
     args = docopt(__doc__)
+
+    # set seed
     random.seed(0)
     torch.manual_seed(0)
+
     if args['--cuda']:
         torch.cuda.manual_seed(0)
+
     if args['train']:
         unique_tags_ner, unique_tags_entity, unique_words = preprocess_data(args, 'TRAIN')
         unique_words_dict = create_vocab(unique_tags_ner, unique_tags_entity, unique_words)
@@ -405,7 +410,7 @@ def main():
     elif args['test']:
         # Load the weights matrix file generated while training
         file_path = "./data/weights_matrix.json"
-        obj_text = codecs.open(file_path, 'r', encoding='utf-8').read()
+        obj_text = open(file_path, 'r', encoding='utf-8').read()
         b_new = json.loads(obj_text)
         weights_matrix = np.array(b_new)
 
@@ -450,7 +455,7 @@ def main():
             print("Finally here!!")
             b = final_weights_matrix.tolist()
             file_path = "./data/weights_matrix.json"
-            json.dump(b, codecs.open(file_path, 'w', encoding='utf-8'), separators=(',', ':'), sort_keys=True, indent=4)
+            json.dump(b, open(file_path, 'w', encoding='utf-8'), separators=(',', ':'), sort_keys=True, indent=4)
 
             test(args, final_weights_matrix)
         else:
