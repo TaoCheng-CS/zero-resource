@@ -21,6 +21,7 @@ Options:
     --optimizer-save-path=<file>        optimizer save path [default: ./model/optimizer.pth]
     --cuda                              use GPU
 """
+# finished 2021.02.03
 
 from docopt import docopt
 from vocab import Vocab

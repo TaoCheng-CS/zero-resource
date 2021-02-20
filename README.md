@@ -124,3 +124,9 @@ python run.py test MTL ./data/tech_test.txt ./vocab/sent_vocab.json ./vocab/tag_
 
 1. https://github.com/Gxzzz/BiLSTM-CRF
 2. https://github.com/jiachenwestlake/Cross-Domain_NER
+
+
+### code review
+
+run.py line12
+![](2021-02-03-20-07-51.png)
